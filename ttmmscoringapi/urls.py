@@ -7,4 +7,5 @@ urlpatterns = [
     path('defaultbid', views.defaultbid),
     path('investors', views.investors),
     path('currentstartup', views.currentstartups),
+    path('progress', views.progress),
 ]

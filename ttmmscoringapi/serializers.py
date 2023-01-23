@@ -9,4 +9,4 @@ class StartupSerializer(serializers.HyperlinkedModelSerializer):
 class FundingSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Funding
-        fields = ('investor_name','startup_name','funding')
+        fields = ('investor_name','startup_name','funding','finalsubmit')
