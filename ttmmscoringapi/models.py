@@ -16,6 +16,9 @@ class Startup(models.Model):
     totalbid = models.IntegerField(blank=True, null=True)
     current = models.BooleanField(blank=True, null=True)
     done = models.BooleanField(blank=True, null=True, default=False)
+    showprogress = models.BooleanField(blank=True, null=True, default=False)
+    showinvestor = models.BooleanField(blank=True, null=True, default=False)
+    isfunded = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
         return self.name

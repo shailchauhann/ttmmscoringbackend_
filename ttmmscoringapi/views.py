@@ -25,8 +25,9 @@ def defaultbid(request):
     # users = User.objects.filter(username=data['username'])
     for funding in fundings:
         startup_name = funding.startup_name.name
+        isfund = funding.startup_name.isfunded
         bid = funding.funding
-        data = OrderedDict([('startup_name',startup_name),('bid',bid)])
+        data = OrderedDict([('startup_name',startup_name),('bid',bid),('isfunded',isfund)])
         data_list.append(data)
     # funding_ser = serializers.FundingSerializer(fundings, many=True)
     # token,created = Token.objects.get_or_create(user=user)
@@ -101,22 +102,51 @@ def investors(request):
     data_list = []
     # admins = AdminUser.objects.filter(name=data['investor_name'])
     startup = Startup.objects.get(name=data['startup_name'])
+    startprogress = startup.showprogress
     # if len(startups)==0:
     #     return JsonResponse({"success":False},safe=False)
     # startup = startups[0]
     funding = Funding.objects.filter(startup_name=startup)
     if len(funding)==0:
-        return JsonResponse({'sucess',False},safe=False)
+        return JsonResponse({"success":False},safe=False)
     for funds in funding:
         investor_name = funds.investor_name
         admins = AdminUser.objects.filter(name=investor_name.name)
         admin = admins[0]
-        image_url = 'http://localhost:8000/'+admin.image.url
+        image_url = 'http://localhost:8000'+admin.image.url
         data = OrderedDict([('investor_name',admin.name),('image',image_url),('bid',funds.funding)])
         data_list.append(data)
+    # data_list.append({'progress':startprogress})
+    # data_list.append({"success":True})
     # token,created = Token.objects.get_or_create(user=user)
     # adminuser = AdminUser(name=data['username'])
-    return JsonResponse(data_list, safe=False)
+    return Response(data_list)
+
+@api_view(["POST"])
+# @permission_classes((AllowAny,))
+def showprogress(request):
+    data = request.data
+    startups = Startup.objects.get(name=data['startup_name'])
+    data_list = []
+    data_list.append({"progress": startups.showprogress})
+    # startup_ser = serializers.StartupSerializer(
+    # startups, many=True)
+    # token,created = Token.objects.get_or_create(user=user)
+    # adminuser = AdminUser(name=data['username'])
+    return Response(data_list)
+
+@api_view(["POST"])
+# @permission_classes((AllowAny,))
+def showinvestor(request):
+    data = request.data
+    startups = Startup.objects.get(name=data['startup_name'])
+    data_list = []
+    data_list.append({"isinvestor": startups.showinvestor})
+    # startup_ser = serializers.StartupSerializer(
+    # startups, many=True)
+    # token,created = Token.objects.get_or_create(user=user)
+    # adminuser = AdminUser(name=data['username'])
+    return Response(data_list)
 
 @api_view(["GET"])
 # @permission_classes((AllowAny,))
@@ -159,9 +189,11 @@ def progress(request):
             totalbid += bid.funding
         if totalbid>=24:
             percentage="100%"
+            startups.isfunded = True
         else:
             percent=int((totalbid/24)*100)
             percentage=str(percent)+'%'
+            startups.isfunded = False
         # return Response('done2')
     data_list = []
     data = OrderedDict([('totalbid',totalbid),('percentage',percentage)])

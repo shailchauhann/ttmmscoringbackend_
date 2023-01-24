@@ -8,4 +8,6 @@ urlpatterns = [
     path('investors', views.investors),
     path('currentstartup', views.currentstartups),
     path('progress', views.progress),
+    path('showprogress', views.showprogress),
+    path('showinvestor', views.showinvestor),
 ]
