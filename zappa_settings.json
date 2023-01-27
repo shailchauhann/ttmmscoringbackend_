@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "aws_region": "ap-south-1",
+        "django_settings": "Backend.settings",
+        "profile_name": "default",
+        "slim_handler": true,
+        "project_name": "ttmmportal2023",
+        "runtime": "python3.8",
+        "s3_bucket": "esummit-ttmm-2023",
+        "vpc_config" : {
+            "SubnetIds": [ "subnet-0cf5cf8caa06ea70c","subnet-035f430f28fee8c3b", "subnet-08e4ba44e51a437e1" ],
+            "SecurityGroupIds": [ "sg-0f9dceda63155e59e" ]
+        }
+    }
+}

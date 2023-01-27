@@ -4,4 +4,14 @@ from .models import *
 
 admin.site.register(AdminUser)
 admin.site.register(Startup)
-admin.site.register(Funding)
+admin.site.register(PortalControl)
+admin.site.register(Funding2)
+class ChoiceInLine(admin.TabularInline):
+    model = Choice
+    
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [(None, {'fields': ['question_text']})]
+    inlines = [ChoiceInLine]
+ 
+ 
+admin.site.register(Question, QuestionAdmin)
